@@ -25,7 +25,6 @@ public class PetServiceImpl implements PetService {
     @Override
     public PetResponseDTO getPetById(Long petId){
         Pet pet = petExternalService.getPetById(petId);
-
         this.LOGGER.info("Pet fetched successfully: id={}, name={}, status={}",
                 pet.getId(),
                 pet.getName(),
@@ -41,7 +40,6 @@ public class PetServiceImpl implements PetService {
     @Override
     public PetCreationResponseDTO createPet(PetRequestDTO requestDTO){
         Pet petCreated = petExternalService.createPet(requestDTO);
-
         this.LOGGER.info("Pet created successfully: id={}, name={}, status={}",
                 petCreated.getId(),
                 petCreated.getName(),
