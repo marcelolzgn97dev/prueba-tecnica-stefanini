@@ -6,6 +6,8 @@ import com.example.prueba_tecnica_stefanini.domain.model.Pet;
 import com.example.prueba_tecnica_stefanini.infrastructure.dto.request.PetRequestDTO;
 import com.example.prueba_tecnica_stefanini.infrastructure.dto.response.PetCreationResponseDTO;
 import com.example.prueba_tecnica_stefanini.infrastructure.dto.response.PetResponseDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,6 +16,7 @@ import java.util.UUID;
 @Service
 public class PetServiceImpl implements PetService {
     private final PetExternalService petExternalService;
+    private final Logger LOGGER = LoggerFactory.getLogger(PetServiceImpl.class);
 
     public PetServiceImpl(PetExternalService petExternalService){
         this.petExternalService = petExternalService;
@@ -22,10 +25,11 @@ public class PetServiceImpl implements PetService {
     @Override
     public PetResponseDTO getPetById(Long petId){
         Pet pet = petExternalService.getPetById(petId);
-        //TODO: ESTO LO DEBO DE REEMPLAZAR CIN LOGS
-        System.out.println("\n");
-        System.out.println("HIIII " + pet.getName());
-        System.out.println("\n");
+
+        this.LOGGER.info("Pet fetched successfully: id={}, name={}, status={}",
+                pet.getId(),
+                pet.getName(),
+                pet.getStatus());
 
         return new PetResponseDTO(
                 pet.getId(),
@@ -37,9 +41,11 @@ public class PetServiceImpl implements PetService {
     @Override
     public PetCreationResponseDTO createPet(PetRequestDTO requestDTO){
         Pet petCreated = petExternalService.createPet(requestDTO);
-        System.out.println("\n");
-        System.out.println("SI SE CREI " + petCreated.getName());
-        System.out.println("\n");
+
+        this.LOGGER.info("Pet created successfully: id={}, name={}, status={}",
+                petCreated.getId(),
+                petCreated.getName(),
+                petCreated.getStatus());
 
         String uuid = UUID.randomUUID().toString();
         LocalDateTime now = LocalDateTime.now();
